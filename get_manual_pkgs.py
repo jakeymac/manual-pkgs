@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+"""
+Tool: manual-pkgs
+Author: Jacob Johnson
+Email: jmjohnson1578@gmail.com
+
+Description:
+A command-line utility to list packages explicitly installed by the user on a Debian-based system.
+It parses the dpkg status file, apt extended states file, and apt history logs to determine which packages were manually installed by the user.
+
+Examples:
+  manual-pkgs -v
+  manual-pkgs --status /var/lib/dpkg/status
+  manual-pkgs --output packages.txt --history-logs /var/log/apt/history.log
+  manual-pkgs --status /var/lib/dpkg/status --extended /var/lib/apt/extended_states --history-logs /var/log/apt/history.log
+"""
 
 import os
 import sys
@@ -59,7 +74,7 @@ def get_manual_from_apt_history(log_paths):
         if not os.path.exists(path):
             print(f"{RED_TEXT}Error: Log file not found: {path}{RESET_TEXT_COLOR}")
             sys.exit(1)
-            
+
     manual = set()
     
     # Read the history logs and get all explicitly installed packages
@@ -103,14 +118,30 @@ def get_manual_packages(status_path, extended_path, log_paths, verbose):
     return manual_packages
 
 def main():
-    parser = argparse.ArgumentParser(description="List packages explicitly intalled by the user.")
+    parser = argparse.ArgumentParser(description=("List packages explicitly installed by the user.\n"
+                                                  "Examples:\n"
+                                                  "  manual-pkgs -v\n"
+                                                  "  manual-pkgs --status /var/lib/dpkg/status\n"
+                                                  "  manual-pkgs --output packages.txt --history-logs /var/log/apt/history.log"), 
+                                    formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("--status", default="/var/lib/dpkg/status", 
-                        help="Path to the dpkg status file.")
+                        help=("Path to the dpkg status file.\n"
+                              "Example:\n"
+                              "  --status /var/lib/dpkg/status")
+                        )
     parser.add_argument("--extended", default="/var/lib/apt/extended_states", 
-                        help="Path to the apt extended_states file.")
-    parser.add_argument("--history-logs", nargs="+", default=["/var/log/apt/history.log"], 
-                        help="Paths to the apt history log files to check.")
+                        help=("Path to the apt extended_states file.\n" \
+                        "Example:\n" \
+                        "  --extended /var/lib/apt/extended_states")
+                        )
+    parser.add_argument("--history-logs", nargs="+", 
+                        default=["/var/log/apt/history.log"], 
+                        help=("Paths to the apt history log files to check.\n"
+                              "Example:\n"
+                              "  --history-logs /var/log/apt/history.log /var/log/apt/history.log.1")
+                        )
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose output.")
+    parser.add_argument("-o", "--output", default="", help="Path to save output list to a file.")
 
     args = parser.parse_args()
     manual_packages = get_manual_packages(args.status, args.extended, args.history_logs, args.verbose)
@@ -118,8 +149,14 @@ def main():
     if not manual_packages:
         print(f"{BLUE_TEXT}No packages found that were explicitly installed by the user.{RESET_TEXT_COLOR}")
     else:
-        print(f"{GREEN_TEXT}Packages explicitly installed by the user:{RESET_TEXT_COLOR}")
-        print("\n".join(manual_packages))
+        if args.output:
+            with open(args.output, "w") as file:
+                for package in manual_packages:
+                    file.write(package + "\n")
+                print(f"{GREEN_TEXT}Saved list of packages explicitly installed by the user to {args.output}{RESET_TEXT_COLOR}")
+        else:
+            print(f"{GREEN_TEXT}Packages explicitly installed by the user:{RESET_TEXT_COLOR}")
+            print("\n".join(manual_packages))
 
 if __name__ == "__main__":
     main()
