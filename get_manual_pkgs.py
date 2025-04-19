@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
 
+import os
+import sys
 import argparse
 
 # Color codes for terminal output
 GREEN_TEXT = "\033[92m"
 BLUE_TEXT = "\033[94m"
+RED_TEXT = "\033[91m"
 RESET_TEXT_COLOR = "\033[0m"
 
 def get_installed_packages(status_path):
     """ Gets the full list of installed packages from the dpkg status file. """
+    if not os.path.exists(status_path):
+        print(f"{RED_TEXT}Error: Status file not found: {status_path}{RESET_TEXT_COLOR}")
+        sys.exit(1)
+
     installed = set()
     
     # Read the status file and parse all installed packages
@@ -27,6 +34,10 @@ def get_installed_packages(status_path):
 
 def get_manual_from_extended_states(extended_path):
     """ Parses the extended states file to find packages that were manually installed. """
+    if not os.path.exists(extended_path):
+        print(f"{RED_TEXT}Error: Extended states file not found: {extended_path}{RESET_TEXT_COLOR}")
+        sys.exit(1)
+
     manual = set()
 
     # Read the extended states file and parse all manually installed packages
@@ -44,6 +55,11 @@ def get_manual_from_extended_states(extended_path):
 
 def get_manual_from_apt_history(log_paths):
     """ Parses the apt history logs to find packages that the user manually installed. """
+    for path in log_paths:
+        if not os.path.exists(path):
+            print(f"{RED_TEXT}Error: Log file not found: {path}{RESET_TEXT_COLOR}")
+            sys.exit(1)
+            
     manual = set()
     
     # Read the history logs and get all explicitly installed packages
