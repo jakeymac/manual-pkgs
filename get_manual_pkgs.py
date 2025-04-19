@@ -2,6 +2,11 @@
 
 import argparse
 
+# Color codes for terminal output
+GREEN_TEXT = "\033[92m"
+BLUE_TEXT = "\033[94m"
+RESET_TEXT_COLOR = "\033[0m"
+
 def get_installed_packages(status_path):
     """ Gets the full list of installed packages from the dpkg status file. """
     installed = set()
@@ -63,14 +68,23 @@ def get_manual_from_apt_history(log_paths):
                     current_command_line = None
     return manual
 
-def get_manual_packages(status_path, extended_path, log_paths):
+def get_manual_packages(status_path, extended_path, log_paths, verbose):
     """ Returns the list of currently installed packages that were explicitly installed by the user. """
     installed = get_installed_packages(status_path)
     manual_extended = get_manual_from_extended_states(extended_path)
     manual_history = get_manual_from_apt_history(log_paths)
 
     # Return all packages that are installed and are listed in the extended states or history logs
-    return installed & (manual_extended | manual_history)
+    manual_packages = installed & (manual_extended | manual_history)
+
+    # If verbose is enabled, print the counts of each set of packages from each source
+    if verbose:
+        print(f"{BLUE_TEXT}Installed packages found: {len(installed)}{RESET_TEXT_COLOR}")
+        print(f"{BLUE_TEXT}Manual packages from extended states: {len(manual_extended)}{RESET_TEXT_COLOR}")
+        print(f"{BLUE_TEXT}Manual packages from history logs: {len(manual_history)}{RESET_TEXT_COLOR}")
+        print(f"{BLUE_TEXT}Final list of manually installed packages found: {len(manual_packages)}{RESET_TEXT_COLOR}")
+
+    return manual_packages
 
 def main():
     parser = argparse.ArgumentParser(description="List packages explicitly intalled by the user.")
@@ -80,14 +94,15 @@ def main():
                         help="Path to the apt extended_states file.")
     parser.add_argument("--history-logs", nargs="+", default=["/var/log/apt/history.log"], 
                         help="Paths to the apt history log files to check.")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose output.")
 
     args = parser.parse_args()
-    manual_packages = get_manual_packages(args.status, args.extended, args.history_logs)
+    manual_packages = get_manual_packages(args.status, args.extended, args.history_logs, args.verbose)
 
     if not manual_packages:
-        print("No packages found that were explicitly installed by the user.")
+        print(f"{BLUE_TEXT}No packages found that were explicitly installed by the user.{RESET_TEXT_COLOR}")
     else:
-        print("Packages explicitly installed by the user:")
+        print(f"{GREEN_TEXT}Packages explicitly installed by the user:{RESET_TEXT_COLOR}")
         print("\n".join(manual_packages))
 
 if __name__ == "__main__":
