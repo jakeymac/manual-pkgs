@@ -144,7 +144,8 @@ def main():
     parser.add_argument("-o", "--output", default="", help="Path to save output list to a file.")
 
     args = parser.parse_args()
-    manual_packages = get_manual_packages(args.status, args.extended, args.history_logs, args.verbose)
+    # Get manually installed packages in alphabetical order
+    manual_packages = sorted(get_manual_packages(args.status, args.extended, args.history_logs, args.verbose))
 
     if not manual_packages:
         print(f"{BLUE_TEXT}No packages found that were explicitly installed by the user.{RESET_TEXT_COLOR}")
