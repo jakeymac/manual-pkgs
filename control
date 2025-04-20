@@ -1,0 +1,8 @@
+Package: manual-pkgs
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Jacob Johnson <jmjohnson1578@gmail.com>
+Description: A CLI tool to list packages explicitly installed by the user.
+ This tool parses the dpkg status, apt extended states, and apt history log files
