@@ -1,5 +1,7 @@
 # manual-pkgs 
+![Release](https://github.com/jakeymac/manual-pkgs/actions/workflows/release.yml/badge.svg)
 ![License](https://img.shields.io/github/license/jakeymac/manual-pkgs)
+![Latest Release](https://img.shields.io/github/v/release/jakeymac/manual-pkgs)
 
 A command-line tool to list packages currently installed that were explicitly installed by the user
 
