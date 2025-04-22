@@ -1,0 +1,33 @@
+name: Lint manual-pkgs
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install linting dependencies
+        run: |
+          pip install flake8 black isort
+
+      - name: Run flake8
+        run: flake8 .
+
+      - name: Run black check
+        run: black --check .
+
+      - name: Run isort check
+        run: isort --check-only .

@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.fixture
 def normal_status_file(tmp_path):
     f = tmp_path / "status"
@@ -17,6 +18,7 @@ def normal_status_file(tmp_path):
     )
     return f
 
+
 @pytest.fixture
 def normal_extended_states_file(tmp_path):
     f = tmp_path / "extended_states"
@@ -27,6 +29,7 @@ def normal_extended_states_file(tmp_path):
         "Package: package-4\nAuto-Installed: 0"
     )
     return f
+
 
 @pytest.fixture
 def normal_history_log_file(tmp_path):
@@ -43,6 +46,7 @@ def normal_history_log_file(tmp_path):
     )
     return f
 
+
 @pytest.fixture
 def normal_history_log_file_2(tmp_path):
     f = tmp_path / "history.log.1"
@@ -57,6 +61,7 @@ def normal_history_log_file_2(tmp_path):
         "End-Date: 2025-04-21  12:05:00\n"
     )
     return f
+
 
 @pytest.fixture
 def abnormal_status_file(tmp_path):
@@ -75,6 +80,7 @@ def abnormal_status_file(tmp_path):
     )
     return f
 
+
 @pytest.fixture
 def abnormal_extended_states_file(tmp_path):
     f = tmp_path / "abnormal_extended_states"
@@ -85,6 +91,7 @@ def abnormal_extended_states_file(tmp_path):
         "Package: package-4\nAuto-Installed: 0\n"
     )
     return f
+
 
 @pytest.fixture
 def abnormal_history_log_file(tmp_path):
@@ -100,6 +107,7 @@ def abnormal_history_log_file(tmp_path):
     )
     return f
 
+
 @pytest.fixture
 def abnormal_history_log_file_2(tmp_path):
     f = tmp_path / "abnormal_history.log.1"
@@ -114,6 +122,7 @@ def abnormal_history_log_file_2(tmp_path):
     )
     return f
 
+
 @pytest.fixture
 def no_packages_installed_status_file(tmp_path):
     f = tmp_path / "no_packages_installed_status"
@@ -123,4 +132,3 @@ def no_packages_installed_status_file(tmp_path):
         "Package: package-3\nStatus: not-installed\n"
     )
     return f
-
