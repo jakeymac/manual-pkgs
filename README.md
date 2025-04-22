@@ -85,6 +85,7 @@ manual-pkgs --extended /custom/path/extended_states
 
 # Use custom file paths for history logs
 manual-pkgs --history-logs /custom/path/history.log /custom/path/history.log.1
+```
 
 ## License
 
