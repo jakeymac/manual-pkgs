@@ -1,4 +1,8 @@
 import pytest
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from get_manual_pkgs import (
     get_installed_packages, 
     get_manual_from_extended_states, 

@@ -1,4 +1,5 @@
 # manual-pkgs 
+![Tests](https://github.com/jakeymac/manual-pkgs/actions/workflows/test.yml/badge.svg)
 ![Release](https://github.com/jakeymac/manual-pkgs/actions/workflows/release.yml/badge.svg)
 ![License](https://img.shields.io/github/license/jakeymac/manual-pkgs)
 ![Latest Release](https://img.shields.io/github/v/release/jakeymac/manual-pkgs)
