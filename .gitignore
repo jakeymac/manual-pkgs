@@ -5,3 +5,6 @@ dist/
 # Python cache
 __pycache__/
 *.pyc
+
+# Coverage
+.coverage

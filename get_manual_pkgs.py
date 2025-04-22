@@ -152,6 +152,7 @@ def main():
     else:
         if args.output:
             with open(args.output, "w") as file:
+                file.write("Packages explicitly installed by the user:\n")
                 for package in manual_packages:
                     file.write(package + "\n")
                 print(f"{GREEN_TEXT}Saved list of packages explicitly installed by the user to {args.output}{RESET_TEXT_COLOR}")

@@ -114,3 +114,13 @@ def abnormal_history_log_file_2(tmp_path):
     )
     return f
 
+@pytest.fixture
+def no_packages_installed_status_file(tmp_path):
+    f = tmp_path / "no_packages_installed_status"
+    f.write_text(
+        "Package: package-1\nStatus: not-installed\n"
+        "Package: package-2\nStatus: not-installed\n"
+        "Package: package-3\nStatus: not-installed\n"
+    )
+    return f
+
