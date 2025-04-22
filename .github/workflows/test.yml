@@ -11,30 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: debian:12
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Create and activate virtual environment
+      - name: Install Python and run tests
         run: |
+          apt update
+          apt install -y python3 python3-pip python3-venv
           python3 -m venv venv
-          source venv/bin/activate
-          echo "source venv/bin/activate" >> $GITHUB_ENV
-
-      - name: Install dependencies
-        run: |
           source venv/bin/activate
           pip install --upgrade pip
           pip install pytest pytest-cov
-
-      - name: Run Tests
-        run: |
-          source venv/bin/activate
           pytest --cov=get_manual_pkgs --cov-report=term-missing tests
-
-            
