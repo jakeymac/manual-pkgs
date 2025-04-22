@@ -7,7 +7,7 @@ RESET_COLOR='\033[0m'
 set -e
 
 PKG_NAME="manual-pkgs"
-VERSION="1.0.0"
+VERSION="1.0.1"
 BUILD_ROOT="dist/${PKG_NAME}_${VERSION}"
 BIN_PATH="$BUILD_ROOT/usr/bin"
 
