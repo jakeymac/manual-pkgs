@@ -93,4 +93,20 @@ def test_get_manual_packages_abnormal(
     assert "package-9" not in packages
     assert "package-10" not in packages
 
+def test_get_installed_packages_nonexistent_file(tmp_path):
+    nonexistent_path = tmp_path / "nonexistent_status"
+    with pytest.raises(SystemExit) as exit_info:
+        get_installed_packages(str(nonexistent_path))
+    assert exit_info.value.code == 1
 
+def test_get_manual_from_extended_states_nonexistent_file(tmp_path):
+    nonexistent_path = tmp_path / "nonexistent_extended_states"
+    with pytest.raises(SystemExit) as exit_info:
+        get_manual_from_extended_states(str(nonexistent_path))
+    assert exit_info.value.code == 1
+
+def test_get_manual_from_apt_history_nonexistent_file(tmp_path):
+    nonexistent_path = tmp_path / "nonexistent_history.log"
+    with pytest.raises(SystemExit) as exit_info:
+        get_manual_from_apt_history([str(nonexistent_path)])
+    assert exit_info.value.code == 1
